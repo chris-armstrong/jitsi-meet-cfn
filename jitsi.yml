@@ -45,6 +45,14 @@ Resources:
           ToPort: 10000
           CidrIp: 0.0.0.0/0
         - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
           FromPort: 4443
           ToPort: 4443
           CidrIp: 0.0.0.0/0
@@ -131,14 +139,13 @@ Resources:
               content: !Sub |
                 ${DNSName}
         Install:
-
           packages:
             apt:
               jitsi-meet: []
-    # CreationPolicy:
-      # ResourceSignal:
-        # Timeout: PT3M
-        # Count: 1
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT10M
+        Count: 1
     Properties:
       InstanceType: !Ref InstanceTypeParameter
       ImageId: !FindInMap [AWSRegionArch2AMI, !Ref "AWS::Region", "HVM64"]
@@ -156,7 +163,7 @@ Resources:
           
           # Install the files and packages from the metadata
           /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource EC2Instance --configsets Install  --region ${AWS::Region} 
-          # /opt/aws/bin/cfn-signal -v --stack ${AWS::StackName} --resource EC2Instance --region ${AWS::Region} -e $?
+          /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource EC2Instance --region ${AWS::Region}
 Outputs:
   IPAddress:
     Description: IP Address of the EC2 instance
