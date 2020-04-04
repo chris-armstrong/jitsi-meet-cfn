@@ -153,6 +153,18 @@ sudo /usr/share/jitsi-meet/scripts/install-letsencrypt-cert.sh
 The script will prompt you for an email address and ask you to agree to the linked usage agreement. Your
 DNS must be set up correctly for this script to run successfully.
 
+It will also create a crontab that automatically renews the certificate (Let's Encrypt certificates
+are only valid for 90 days). It assumes your server is running continuously, so if you shut down your server, 
+keep in mind that this may not run on its weekly schedule to check if a renewal is necessary.
+
 Once this process has complete, you should now be able to navigate to your hostname in your
 web browser and start a meeting.
+
+### Further steps
+
+You will now have an open Jitsi Meet instance which can be used to start video conferences.
+
+Remember, there is no access control, so anyone can create or host a meeting. If you want to restrict
+who can host a meeting, follow the jicofo instructions [here](https://github.com/jitsi/jicofo#secure-domain) 
+on setting up a secure domain.
 
